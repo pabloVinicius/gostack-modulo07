@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { MdAddShoppingCart } from 'react-icons/md';
 import { ProductList } from './styles';
 import api from '../../services/api';
 import { formatPrice } from '../../util/format';
 
-const Home = ({ dispatch }) => {
+import * as CartActions from '../../store/modules/cart/actions';
+
+const Home = ({ addToCart }) => {
   const [products, changeProducts] = useState([]);
 
   const requestData = async () => {
@@ -21,10 +24,7 @@ const Home = ({ dispatch }) => {
   }, []);
 
   const handleAddProduct = product => {
-    dispatch({
-      type: 'ADD_TO_CART',
-      product,
-    });
+    addToCart(product);
   };
 
   return (
@@ -47,7 +47,10 @@ const Home = ({ dispatch }) => {
 };
 
 Home.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  addToCart: PropTypes.func.isRequired,
 };
 
-export default connect()(Home);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(CartActions, dispatch);
+
+export default connect(null, mapDispatchToProps)(Home);

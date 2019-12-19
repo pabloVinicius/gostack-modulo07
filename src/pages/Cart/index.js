@@ -2,14 +2,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
   MdRemoveCircleOutline,
   MdAddCircleOutline,
   MdDelete,
 } from 'react-icons/md';
 import { Container, ProductTable, Total } from './styles';
+import * as CartActions from '../../store/modules/cart/actions';
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart, removeFromCart, addToCart }) => {
   return (
     <Container>
       <ProductTable>
@@ -24,7 +26,7 @@ const Cart = ({ cart }) => {
         </thead>
         <tbody>
           {cart.map(product => (
-            <tr>
+            <tr key={product.id}>
               <td>
                 <img src={product.image} alt={product.name} />
               </td>
@@ -32,11 +34,14 @@ const Cart = ({ cart }) => {
               <td>{product.priceFormated}</td>
               <td>
                 <div>
-                  <button type="button">
+                  <button
+                    type="button"
+                    // onClick={() => handleRemoveFromCart(product.id)}
+                  >
                     <MdRemoveCircleOutline color="#7159c1" size={20} />
                   </button>
                   <input type="number" readOnly value={product.amount} />
-                  <button type="button">
+                  <button type="button" onClick={() => addToCart(product)}>
                     <MdAddCircleOutline color="#7159c1" size={20} />
                   </button>
                 </div>
@@ -45,7 +50,10 @@ const Cart = ({ cart }) => {
                 <strong>R$ 258,80</strong>
               </td>
               <td>
-                <button type="button">
+                <button
+                  type="button"
+                  onClick={() => removeFromCart(product.id)}
+                >
                   <MdDelete size={20} color="#7159c1" />
                 </button>
               </td>
@@ -66,10 +74,15 @@ const Cart = ({ cart }) => {
 
 Cart.propTypes = {
   cart: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addToCart: PropTypes.func.isRequired,
+  removeFromCart: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
   cart: state.cart,
 });
 
-export default connect(mapStateToProps)(Cart);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(CartActions, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);
