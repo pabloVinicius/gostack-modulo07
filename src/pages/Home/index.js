@@ -1,66 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MdAddShoppingCart } from 'react-icons/md';
 import { ProductList } from './styles';
+import api from '../../services/api';
+import { formatPrice } from '../../util/format';
 
 const Home = () => {
+  const [products, changeProducts] = useState([]);
+
+  const requestData = async () => {
+    const response = await api.get('products');
+    changeProducts(
+      response.data.map(el => ({ ...el, priceFormated: formatPrice(el.price) }))
+    );
+  };
+  useEffect(() => {
+    requestData();
+  }, []);
+
   return (
     <ProductList>
-      <li>
-        <img
-          src="https://img.irroba.com.br/fit-in/600x600/filters:fill(fff):quality(90)/adaption/catalog/kits/2-pares/preto-cinza.jpg"
-          alt="Tênis"
-        />
-        <strong>Meu tênis</strong>
-        <span>R$ 70,00</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://img.irroba.com.br/fit-in/600x600/filters:fill(fff):quality(90)/adaption/catalog/kits/2-pares/preto-cinza.jpg"
-          alt="Tênis"
-        />
-        <strong>Meu tênis</strong>
-        <span>R$ 70,00</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://img.irroba.com.br/fit-in/600x600/filters:fill(fff):quality(90)/adaption/catalog/kits/2-pares/preto-cinza.jpg"
-          alt="Tênis"
-        />
-        <strong>Meu tênis</strong>
-        <span>R$ 70,00</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
-      <li>
-        <img
-          src="https://img.irroba.com.br/fit-in/600x600/filters:fill(fff):quality(90)/adaption/catalog/kits/2-pares/preto-cinza.jpg"
-          alt="Tênis"
-        />
-        <strong>Meu tênis</strong>
-        <span>R$ 70,00</span>
-        <button type="button">
-          <div>
-            <MdAddShoppingCart size={16} color="#FFF" />
-          </div>
-          <span>ADICIONAR AO CARRINHO</span>
-        </button>
-      </li>
+      {products.map(product => (
+        <li key={product.id}>
+          <img src={product.image} alt={product.title} />
+          <strong>{product.title}</strong>
+          <span>{product.priceFormated}</span>
+          <button type="button">
+            <div>
+              <MdAddShoppingCart size={16} color="#FFF" />
+            </div>
+            <span>ADICIONAR AO CARRINHO</span>
+          </button>
+        </li>
+      ))}
     </ProductList>
   );
 };
