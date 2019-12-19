@@ -11,7 +11,15 @@ import {
 import { Container, ProductTable, Total } from './styles';
 import * as CartActions from '../../store/modules/cart/actions';
 
-const Cart = ({ cart, removeFromCart, addToCart }) => {
+const Cart = ({ cart, removeFromCart, updateAmount }) => {
+  const increment = product => {
+    updateAmount(product.id, product.amount + 1);
+  };
+
+  const decrement = product => {
+    updateAmount(product.id, product.amount - 1);
+  };
+
   return (
     <Container>
       <ProductTable>
@@ -34,14 +42,11 @@ const Cart = ({ cart, removeFromCart, addToCart }) => {
               <td>{product.priceFormated}</td>
               <td>
                 <div>
-                  <button
-                    type="button"
-                    // onClick={() => handleRemoveFromCart(product.id)}
-                  >
+                  <button type="button" onClick={() => decrement(product)}>
                     <MdRemoveCircleOutline color="#7159c1" size={20} />
                   </button>
                   <input type="number" readOnly value={product.amount} />
-                  <button type="button" onClick={() => addToCart(product)}>
+                  <button type="button" onClick={() => increment(product)}>
                     <MdAddCircleOutline color="#7159c1" size={20} />
                   </button>
                 </div>
@@ -74,7 +79,7 @@ const Cart = ({ cart, removeFromCart, addToCart }) => {
 
 Cart.propTypes = {
   cart: PropTypes.arrayOf(PropTypes.object).isRequired,
-  addToCart: PropTypes.func.isRequired,
+  updateAmount: PropTypes.func.isRequired,
   removeFromCart: PropTypes.func.isRequired,
 };
 
