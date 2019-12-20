@@ -9,7 +9,7 @@ import { formatPrice } from '../../util/format';
 
 import * as CartActions from '../../store/modules/cart/actions';
 
-const Home = ({ addToCart, amount }) => {
+const Home = ({ addToCartRequest, amount }) => {
   const [products, changeProducts] = useState([]);
 
   const requestData = async () => {
@@ -23,8 +23,8 @@ const Home = ({ addToCart, amount }) => {
     requestData();
   }, []);
 
-  const handleAddProduct = product => {
-    addToCart(product);
+  const handleAddProduct = id => {
+    addToCartRequest(id);
   };
 
   return (
@@ -34,7 +34,7 @@ const Home = ({ addToCart, amount }) => {
           <img src={product.image} alt={product.title} />
           <strong>{product.title}</strong>
           <span>{product.priceFormated}</span>
-          <button type="button" onClick={() => handleAddProduct(product)}>
+          <button type="button" onClick={() => handleAddProduct(product.id)}>
             <div>
               <MdAddShoppingCart size={16} color="#FFF" />
               {amount[product.id] || 0}
@@ -48,7 +48,7 @@ const Home = ({ addToCart, amount }) => {
 };
 
 Home.propTypes = {
-  addToCart: PropTypes.func.isRequired,
+  addToCartRequest: PropTypes.func.isRequired,
   amount: PropTypes.objectOf(PropTypes.number).isRequired,
 };
 
