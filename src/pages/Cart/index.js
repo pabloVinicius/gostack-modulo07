@@ -12,13 +12,13 @@ import { Container, ProductTable, Total } from './styles';
 import * as CartActions from '../../store/modules/cart/actions';
 import { formatPrice } from '../../util/format';
 
-const Cart = ({ cart, removeFromCart, updateAmount, total }) => {
+const Cart = ({ cart, removeFromCart, updateAmountRequest, total }) => {
   const increment = product => {
-    updateAmount(product.id, product.amount + 1);
+    updateAmountRequest(product.id, product.amount + 1);
   };
 
   const decrement = product => {
-    updateAmount(product.id, product.amount - 1);
+    updateAmountRequest(product.id, product.amount - 1);
   };
 
   return (
@@ -79,7 +79,7 @@ const Cart = ({ cart, removeFromCart, updateAmount, total }) => {
 
 Cart.propTypes = {
   cart: PropTypes.arrayOf(PropTypes.object).isRequired,
-  updateAmount: PropTypes.func.isRequired,
+  updateAmountRequest: PropTypes.func.isRequired,
   removeFromCart: PropTypes.func.isRequired,
   total: PropTypes.string.isRequired,
 };
