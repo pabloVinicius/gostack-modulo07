@@ -37,10 +37,9 @@ const Cart = ({ cart, removeFromCart, updateAmount, total }) => {
           {cart.map(product => (
             <tr key={product.id}>
               <td>
-                <img src={product.image} alt={product.name} />
+                <img src={product.image} alt={product.title} />
               </td>
-              <td>{product.name}</td>
-              <td>{product.priceFormated}</td>
+              <td>{product.title}</td>
               <td>
                 <div>
                   <button type="button" onClick={() => decrement(product)}>
