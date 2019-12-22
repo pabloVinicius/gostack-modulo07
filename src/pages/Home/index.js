@@ -11,9 +11,9 @@ const Home = () => {
   const [products, changeProducts] = useState([]);
   const amount = useSelector(state =>
     state.cart.reduce((theAmount, product) => {
-      theAmount[product.id] = product.theAmount;
+      theAmount[product.id] = product.amount;
 
-      return amount;
+      return theAmount;
     }, {})
   );
   const dispatch = useDispatch();
